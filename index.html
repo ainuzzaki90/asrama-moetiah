@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>MBMS — Moetiah Boarding Management System</title>
+<meta name="description" content="Sistem Manajemen Asrama SMP Islam Moetiah">
+<meta name="theme-color" content="#0a2540">
+
+<!-- PWA -->
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" href="assets/img/favicon.png">
+<link rel="apple-touch-icon" href="assets/img/icon-192.png">
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- Bootstrap 5 -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css">
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<!-- DataTables -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.13.11/css/jquery.dataTables.min.css">
+
+<!-- MBMS Design System -->
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<!-- ============================== LOGIN SCREEN ============================== -->
+<div class="login-wrap" id="loginScreen">
+  <div class="login-visual khatam-pattern" style="background-blend-mode:overlay;">
+    <img src="assets/img/logo.png" alt="Logo SMP Islam Moetiah" class="brand-seal" style="background:#fff;object-fit:contain;padding:6px">
+    <h1 class="js-app-name">MOETIAH BOARDING MANAGEMENT SYSTEM</h1>
+    <p class="subtitle js-app-subtitle">Sistem Manajemen Asrama SMP Islam Moetiah</p>
+    <div class="quote">"Menjaga amanah pendidikan generasi Qur'ani melalui pengelolaan asrama yang disiplin, transparan, dan penuh keteladanan."</div>
+  </div>
+  <div class="login-form-side">
+    <div class="login-card">
+      <div class="eyebrow">MBMS · Portal Masuk</div>
+      <h2>Selamat Datang Kembali</h2>
+      <form id="loginForm">
+        <div class="mb-3">
+          <label class="form-label-mbms">Username</label>
+          <div class="input-icon-wrap">
+            <i class="fa-solid fa-user"></i>
+            <input type="text" class="form-control form-control-mbms" id="username" placeholder="Masukkan username" required autocomplete="username">
+          </div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label-mbms">Password</label>
+          <div class="input-icon-wrap">
+            <i class="fa-solid fa-lock"></i>
+            <input type="password" class="form-control form-control-mbms" id="password" placeholder="Masukkan password" required autocomplete="current-password">
+          </div>
+        </div>
+        <button type="submit" class="btn btn-mbms-primary w-100 mt-2" id="btnLogin">Masuk ke Sistem</button>
+      </form>
+      <p class="login-footer-note">
+        Dikembangkan oleh <strong class="js-wali-asrama">Abdal Ainuz Zaki, B.A.</strong><br>
+        © <span id="yearNow"></span> MBMS · SMP Islam Moetiah
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ============================== APP SHELL ============================== -->
+<div class="app-shell" id="appShell" style="display:none">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <img src="assets/img/logo.png" alt="Logo" class="seal" style="background:#fff;object-fit:contain;padding:3px">
+      <div class="txt"><b>MBMS</b><small>Moetiah Boarding System</small></div>
+    </div>
+    <nav class="sidebar-nav" id="sidebarNav"></nav>
+    <div class="sidebar-footer">
+      <div class="full">Dikembangkan oleh<br><b class="js-wali-asrama" style="color:#fff">Abdal Ainuz Zaki, B.A.</b></div>
+    </div>
+  </aside>
+
+  <div class="main-col" id="mainCol">
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="burger-btn d-none d-lg-inline" onclick="Sidebar.toggleCollapse()"><i class="fa-solid fa-bars"></i></button>
+        <button class="burger-btn d-lg-none" onclick="Sidebar.toggleMobile()"><i class="fa-solid fa-bars"></i></button>
+        <div class="breadcrumb-mbms" id="breadcrumbText">Dashboard</div>
+      </div>
+      <div class="topbar-right">
+        <button class="topbar-icon-btn" id="notifBell" onclick="Notif.togglePanel()">
+          <i class="fa-regular fa-bell"></i><span class="badge-dot" id="notifBadgeDot" style="display:none"></span>
+        </button>
+        <div class="notif-panel" id="notifPanel"></div>
+        <div class="dropdown">
+          <div class="user-chip" data-bs-toggle="dropdown">
+            <div class="avatar" id="userAvatarInitials">AA</div>
+            <div class="meta d-none d-sm-block">
+              <b id="userNameChip">-</b>
+              <small id="userRoleChip">-</small>
+            </div>
+            <i class="fa-solid fa-chevron-down" style="font-size:10px;color:var(--muted)"></i>
+          </div>
+          <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+            <li><a class="dropdown-item" href="#" onclick="Router.go('settings')"><i class="fa-solid fa-gear me-2"></i>Pengaturan</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item text-danger" href="#" onclick="handleLogout()"><i class="fa-solid fa-right-from-bracket me-2"></i>Keluar</a></li>
+          </ul>
+        </div>
+      </div>
+    </header>
+
+    <main id="pageContent"><!-- module content injected here by Router --></main>
+  </div>
+</div>
+
+<!-- ============================== VENDOR SCRIPTS ============================== -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.13.11/js/jquery.dataTables.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.10.8/sweetalert2.all.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.3/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/luxon/3.4.4/luxon.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+<!-- ============================== MBMS APP SCRIPTS (order matters) ============================== -->
+<script src="assets/js/config.js"></script>
+<script src="assets/js/mockData.js"></script>
+<script src="assets/js/api.js"></script>
+<script src="assets/js/auth.js"></script>
+<script src="assets/js/core.js"></script>
+
+<script src="assets/js/modules/dashboard.js"></script>
+<script src="assets/js/modules/siswa.js"></script>
+<script src="assets/js/modules/kamar.js"></script>
+<script src="assets/js/modules/piket.js"></script>
+<script src="assets/js/modules/tabungan.js"></script>
+<script src="assets/js/modules/users.js"></script>
+<script src="assets/js/modules/simpleModules.js"></script>
+<script src="assets/js/modules/tumbuhKembang.js"></script>
+<script src="assets/js/modules/reports.js"></script>
+<script src="assets/js/modules/aiAssistant.js"></script>
+
+<script src="assets/js/app-init.js"></script>
+<script>document.getElementById("yearNow").textContent = new Date().getFullYear();</script>
+</body>
+</html>
