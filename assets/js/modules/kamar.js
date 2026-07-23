@@ -11,7 +11,7 @@
       <div class="page-content">
         <div class="page-header">
           <div><h3><i class="fa-solid fa-door-open" style="color:var(--gold);margin-right:8px"></i>Manajemen Kamar</h3>
-          <p>Layout visual kamar &amp; okupansi santri secara real-time</p></div>
+          <p>Layout visual kamar &amp; okupansi siswa secara real-time</p></div>
           <button class="btn btn-navy" id="btnAddRoom"><i class="fa-solid fa-plus me-1"></i>Tambah Kamar</button>
         </div>
         <div class="room-grid" id="roomGrid"></div>

@@ -4,9 +4,9 @@
 (function(){
 
   async function render(container){
-    const [siswa, kamar, presensiAll, izin, pelanggaran, keuangan] = await Promise.all([
+    const [siswa, kamar, presensiAll, izin, pelanggaran, tabungan] = await Promise.all([
       Api.list("siswa"), Api.list("kamar"), Api.list("presensi"),
-      Api.list("perizinan"), Api.list("pelanggaran"), Api.list("keuangan"),
+      Api.list("perizinan"), Api.list("pelanggaran"), Api.list("tabungan"),
     ]);
     await Cache.refresh();
 
@@ -15,9 +15,9 @@
     const izinBerjalan = izin.filter(i=>i.status==="Berjalan").length;
     const kapasitasTotal = kamar.reduce((a,k)=>a+Number(k.kapasitas||0),0);
     const terisi = siswa.filter(s=>s.status==="Aktif").length;
-    const pemasukan = keuangan.filter(k=>k.jenis==="Pemasukan").reduce((a,k)=>a+Number(k.jumlah||0),0);
-    const pengeluaran = keuangan.filter(k=>k.jenis==="Pengeluaran").reduce((a,k)=>a+Number(k.jumlah||0),0);
-    const saldo = pemasukan - pengeluaran;
+    const setoran = tabungan.filter(k=>k.jenis==="Setoran").reduce((a,k)=>a+Number(k.jumlah||0),0);
+    const penarikan = tabungan.filter(k=>k.jenis==="Penarikan").reduce((a,k)=>a+Number(k.jumlah||0),0);
+    const saldo = setoran - penarikan;
     const pelanggaranBulanIni = pelanggaran.filter(p=>luxon.DateTime.fromISO(p.tanggal).hasSame(luxon.DateTime.now(),"month")).length;
 
     const sakit = (await Api.list("kesehatan")).filter(k=>luxon.DateTime.fromISO(k.tanggal).hasSame(luxon.DateTime.now(),"day")).length;
@@ -33,17 +33,17 @@
         </div>
 
         <div class="row g-3 mb-4">
-          ${statCard("fa-solid fa-user-graduate","var(--info)","var(--info-bg)", terisi, "Total Santri Aktif", `${kamar.length} kamar tersedia`)}
+          ${statCard("fa-solid fa-user-graduate","var(--info)","var(--info-bg)", terisi, "Total Siswa Aktif", `${kamar.length} kamar tersedia`)}
           ${statCard("fa-solid fa-door-open","var(--gold-dark)","var(--warning-bg)", `${terisi}/${kapasitasTotal}`, "Okupansi Asrama", Math.round(terisi/kapasitasTotal*100)+"% terisi")}
-          ${statCard("fa-solid fa-right-from-bracket","var(--danger)","var(--danger-bg)", izinBerjalan, "Izin Sedang Berjalan", izinBerjalan? "Perlu dipantau" : "Semua santri di asrama")}
-          ${statCard("fa-solid fa-sack-dollar","var(--success)","var(--success-bg)", Utils.fmtCurrency(saldo), "Saldo Kas Asrama", "Bulan berjalan")}
+          ${statCard("fa-solid fa-right-from-bracket","var(--danger)","var(--danger-bg)", izinBerjalan, "Izin Sedang Berjalan", izinBerjalan? "Perlu dipantau" : "Semua siswa di asrama")}
+          ${statCard("fa-solid fa-piggy-bank","var(--success)","var(--success-bg)", Utils.fmtCurrency(saldo), "Total Saldo Tabungan Siswa", "Bulan berjalan")}
         </div>
 
         <div class="row g-3 mb-4">
           <div class="col-lg-8">
             <div class="card-mbms h-100">
-              <div class="card-header-mbms"><h6><i class="fa-solid fa-chart-line me-2" style="color:var(--gold)"></i>Grafik Keuangan 6 Bulan Terakhir</h6></div>
-              <div class="card-body-mbms"><canvas id="chartKeuangan" height="95"></canvas></div>
+              <div class="card-header-mbms"><h6><i class="fa-solid fa-chart-line me-2" style="color:var(--gold)"></i>Tren Tabungan Siswa (6 Bulan Terakhir)</h6></div>
+              <div class="card-body-mbms"><canvas id="chartTabungan" height="95"></canvas></div>
             </div>
           </div>
           <div class="col-lg-4">
@@ -79,11 +79,11 @@
               <div class="card-header-mbms"><h6><i class="fa-solid fa-kit-medical me-2" style="color:var(--gold)"></i>Ringkasan Kesehatan</h6></div>
               <div class="card-body-mbms">
                 <div class="d-flex align-items-center justify-content-between mb-3">
-                  <div><div class="lbl" style="color:var(--muted);font-size:12.5px">Santri sakit hari ini</div><div class="val" style="font-family:var(--font-display);font-size:22px;font-weight:700;color:var(--navy)">${sakit}</div></div>
+                  <div><div class="lbl" style="color:var(--muted);font-size:12.5px">Siswa sakit hari ini</div><div class="val" style="font-family:var(--font-display);font-size:22px;font-weight:700;color:var(--navy)">${sakit}</div></div>
                   <i class="fa-solid fa-thermometer" style="font-size:28px;color:var(--warning)"></i>
                 </div>
                 <hr class="hairline-gold">
-                <div class="lbl mb-2" style="color:var(--muted);font-size:12.5px">Distribusi Santri per Kamar</div>
+                <div class="lbl mb-2" style="color:var(--muted);font-size:12.5px">Distribusi Siswa per Kamar</div>
                 <canvas id="chartKamar" height="140"></canvas>
               </div>
             </div>
@@ -91,7 +91,7 @@
         </div>
       </div>`;
 
-    renderCharts(keuangan, presensiToday, siswa, kamar);
+    renderCharts(tabungan, presensiToday, siswa, kamar);
   }
 
   function statCard(icon,color,bg,val,lbl,trend){
@@ -105,18 +105,18 @@
     </div>`;
   }
 
-  function renderCharts(keuangan, presensiToday, siswa, kamar){
+  function renderCharts(tabungan, presensiToday, siswa, kamar){
     const months = Array.from({length:6}).map((_,i)=> luxon.DateTime.now().minus({months:5-i}));
-    const income = months.map(m => keuangan.filter(k=>k.jenis==="Pemasukan" && luxon.DateTime.fromISO(k.tanggal).hasSame(m,"month")).reduce((a,k)=>a+Number(k.jumlah||0),0));
-    const expense = months.map(m => keuangan.filter(k=>k.jenis==="Pengeluaran" && luxon.DateTime.fromISO(k.tanggal).hasSame(m,"month")).reduce((a,k)=>a+Number(k.jumlah||0),0));
+    const setoran = months.map(m => tabungan.filter(k=>k.jenis==="Setoran" && luxon.DateTime.fromISO(k.tanggal).hasSame(m,"month")).reduce((a,k)=>a+Number(k.jumlah||0),0));
+    const penarikan = months.map(m => tabungan.filter(k=>k.jenis==="Penarikan" && luxon.DateTime.fromISO(k.tanggal).hasSame(m,"month")).reduce((a,k)=>a+Number(k.jumlah||0),0));
 
-    new Chart(document.getElementById("chartKeuangan"), {
+    new Chart(document.getElementById("chartTabungan"), {
       type:"bar",
       data:{
         labels: months.map(m=>m.setLocale("id").toFormat("LLL yy")),
         datasets:[
-          { label:"Pemasukan", data:income, backgroundColor:"#0a2540", borderRadius:6 },
-          { label:"Pengeluaran", data:expense, backgroundColor:"#d4af37", borderRadius:6 },
+          { label:"Setoran", data:setoran, backgroundColor:"#0a2540", borderRadius:6 },
+          { label:"Penarikan", data:penarikan, backgroundColor:"#d4af37", borderRadius:6 },
         ]
       },
       options:{ responsive:true, plugins:{legend:{position:"bottom"}}, scales:{ y:{ ticks:{ callback:v=>"Rp "+(v/1000)+"rb" } } } }

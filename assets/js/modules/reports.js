@@ -58,12 +58,13 @@ const Reports = (() => {
 
   const REPORT_TYPES = [
     { id:"siswa", label:"Data Siswa", cols:["NIS","Nama","Kelas","Kamar","Status"], map:(r,c)=>[r.nis,r.nama,r.kelas,c.kamarName(r.kamarId),r.status] },
-    { id:"presensi", label:"Presensi Harian", cols:["Tanggal","Santri","Bangun","Sholat","Mengaji","Sekolah","Tidur"], map:(r,c)=>[Utils.fmtDate(r.tanggal),c.siswaName(r.siswaId),r.bangun,r.sholat,r.mengaji,r.sekolah,r.tidur] },
-    { id:"pelanggaran", label:"Pelanggaran & Pembinaan", cols:["Tanggal","Santri","Kategori","Jenis","Poin","Status"], map:(r,c)=>[Utils.fmtDate(r.tanggal),c.siswaName(r.siswaId),r.kategori,r.jenis,r.poin,r.status] },
-    { id:"prestasi", label:"Prestasi Siswa", cols:["Tanggal","Santri","Kategori","Prestasi","Tingkat"], map:(r,c)=>[Utils.fmtDate(r.tanggal),c.siswaName(r.siswaId),r.kategori,r.nama,r.tingkat] },
-    { id:"kesehatan", label:"Kesehatan Siswa", cols:["Tanggal","Santri","Keluhan","Dirujuk"], map:(r,c)=>[Utils.fmtDate(r.tanggal),c.siswaName(r.siswaId),r.keluhan,r.statusRujuk] },
-    { id:"keuangan", label:"Keuangan Asrama", cols:["Tanggal","Jenis","Kategori","Keterangan","Jumlah"], map:(r,c)=>[Utils.fmtDate(r.tanggal),r.jenis,r.kategori,r.keterangan,Utils.fmtCurrency(r.jumlah)] },
-    { id:"perizinan", label:"Perizinan Siswa", cols:["Santri","Jenis","Keluar","Kembali","Status"], map:(r,c)=>[c.siswaName(r.siswaId),r.jenis,Utils.fmtDate(r.tglKeluar),Utils.fmtDate(r.tglKembali),r.status] },
+    { id:"presensi", label:"Presensi Harian", cols:["Tanggal","Siswa","Bangun","Sholat","Mengaji","Sekolah","Tidur"], map:(r,c)=>[Utils.fmtDate(r.tanggal),c.siswaName(r.siswaId),r.bangun,r.sholat,r.mengaji,r.sekolah,r.tidur] },
+    { id:"pelanggaran", label:"Pelanggaran & Pembinaan", cols:["Tanggal","Siswa","Kategori","Jenis","Poin","Status"], map:(r,c)=>[Utils.fmtDate(r.tanggal),c.siswaName(r.siswaId),r.kategori,r.jenis,r.poin,r.status] },
+    { id:"prestasi", label:"Prestasi Siswa", cols:["Tanggal","Siswa","Kategori","Prestasi","Tingkat"], map:(r,c)=>[Utils.fmtDate(r.tanggal),c.siswaName(r.siswaId),r.kategori,r.nama,r.tingkat] },
+    { id:"kesehatan", label:"Kesehatan Siswa", cols:["Tanggal","Siswa","Keluhan","Dirujuk"], map:(r,c)=>[Utils.fmtDate(r.tanggal),c.siswaName(r.siswaId),r.keluhan,r.statusRujuk] },
+    { id:"tumbuh_kembang", label:"Tumbuh Kembang Siswa", cols:["Tanggal","Siswa","Tinggi (cm)","Berat (kg)","IMT"], map:(r,c)=>[Utils.fmtDate(r.tanggal),c.siswaName(r.siswaId),r.tinggiBadan,r.beratBadan,r.bmi] },
+    { id:"tabungan", label:"Tabungan Siswa", cols:["Tanggal","Siswa","Jenis","Keterangan","Jumlah","Saldo Setelah"], map:(r,c)=>[Utils.fmtDate(r.tanggal),c.siswaName(r.siswaId),r.jenis,r.keterangan,Utils.fmtCurrency(r.jumlah),Utils.fmtCurrency(r.saldoSetelah)] },
+    { id:"perizinan", label:"Perizinan Siswa", cols:["Siswa","Jenis","Keluar","Kembali","Status"], map:(r,c)=>[c.siswaName(r.siswaId),r.jenis,Utils.fmtDate(r.tglKeluar),Utils.fmtDate(r.tglKembali),r.status] },
   ];
 
   async function renderPage(container){
@@ -81,8 +82,8 @@ const Reports = (() => {
             </select>
           </div>
           <div class="col-md-3">
-            <label class="form-label-mbms">Filter Santri (opsional)</label>
-            <select id="repSiswa" class="form-select form-control-mbms" style="padding-left:16px"><option value="">Semua Santri</option>
+            <label class="form-label-mbms">Filter Siswa (opsional)</label>
+            <select id="repSiswa" class="form-select form-control-mbms" style="padding-left:16px"><option value="">Semua Siswa</option>
               ${Cache.allSiswa().map(s=>`<option value="${s.id}">${s.nama}</option>`).join("")}</select>
           </div>
           <div class="col-md-2">

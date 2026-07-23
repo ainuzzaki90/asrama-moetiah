@@ -3,7 +3,7 @@
 Sistem Manajemen Asrama SMP Islam Moetiah. Aplikasi web modular untuk
 mengelola seluruh kehidupan santri di asrama: data siswa, kamar, presensi,
 perizinan, kebersihan, piket, pelanggaran/pembinaan, prestasi, kesehatan,
-inventaris, laundry, keuangan, laporan, dan manajemen pengguna — lengkap
+inventaris, tabungan siswa, laporan, dan manajemen pengguna — lengkap
 dengan AI Assistant, RBAC, audit log, dan dukungan PWA.
 
 ---
@@ -30,10 +30,10 @@ mbms/
 │           ├── siswa.js           # Data siswa (foto, QR ID, Excel import/export)
 │           ├── kamar.js           # Layout visual kamar & okupansi
 │           ├── piket.js           # Generator jadwal piket rotasi adil
-│           ├── keuangan.js        # Kas, denda, pengeluaran + grafik tren
+│           ├── tabungan.js        # Tabungan siswa (setoran/penarikan) + buku tabungan
 │           ├── users.js           # Manajemen pengguna (khusus Super Admin)
 │           ├── simpleModules.js   # Presensi, perizinan, pelanggaran, prestasi,
-│           │                      # kesehatan, inventaris, laundry, kebersihan,
+│           │                      # kesehatan, inventaris, kebersihan,
 │           │                      # audit log, pengaturan
 │           ├── reports.js         # Laporan & export PDF/Excel
 │           └── aiAssistant.js     # AI Assistant (floating chat)
@@ -132,7 +132,7 @@ tim (Super Admin, Kepala Sekolah, Wali Asrama) secara bersamaan.
 | POST   | Login                          | `{ action:"login", username, password }`      |
 
 Nama sheet yang didukung: `users, siswa, kamar, presensi, perizinan,
-pelanggaran, prestasi, kesehatan, inventaris, laundry, keuangan,
+pelanggaran, prestasi, kesehatan, tumbuh_kembang, inventaris, tabungan,
 jadwal_piket, kebersihan, audit_log, notifications`.
 
 ---
@@ -154,7 +154,7 @@ menambah/mengubah role cukup dilakukan di satu tempat.
 
 ## 6. Fitur Utama yang Sudah Diimplementasikan
 
-- **Dashboard** — kartu statistik real-time + grafik Chart.js (keuangan, presensi, okupansi kamar).
+- **Dashboard** — kartu statistik real-time + grafik Chart.js (tabungan siswa, presensi, okupansi kamar).
 - **Data Siswa** — foto (drag & drop), kartu ID + QR code, import/export Excel.
 - **Manajemen Kamar** — layout visual kapasitas & penghuni per kamar.
 - **Presensi Harian** — bangun, sholat, mengaji, sekolah, tidur.
@@ -162,7 +162,7 @@ menambah/mengubah role cukup dilakukan di satu tempat.
 - **Kebersihan Kamar** — checklist + foto sebelum/sesudah + skor.
 - **Jadwal Piket** — generator otomatis dengan rotasi adil berbasis riwayat piket.
 - **Pelanggaran & Pembinaan** — kategori, poin, tindak lanjut, otomatis mengirim notifikasi.
-- **Prestasi Siswa**, **Kesehatan Siswa**, **Inventaris**, **Laundry**, **Keuangan Asrama**.
+- **Prestasi Siswa**, **Kesehatan Siswa**, **Tumbuh Kembang Siswa** (tinggi/berat berkala + IMT otomatis + grafik tren), **Inventaris**, dan **Tabungan Siswa** (setoran/penarikan per siswa dengan validasi saldo & cetak buku tabungan).
 - **AI Assistant** (tombol mengambang) — meringkas perkembangan santri, mendeteksi
   santri berisiko, memberi rekomendasi pembinaan, dan membuat draf laporan
   berdasarkan data langsung (rule-engine lokal, tanpa API key; siap

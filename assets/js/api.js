@@ -85,20 +85,31 @@ const Api = (() => {
     const url = new URL(APP_CONFIG.API_URL);
     Object.entries(params).forEach(([k,v])=>url.searchParams.set(k,v));
     url.searchParams.set("token", authToken());
-    return fetch(url.toString()).then(r=>r.json());
+    return fetch(url.toString())
+      .then(r => r.json())
+      .catch(err => { throw new Error("Gagal menghubungi backend Google Apps Script: " + err.message); });
   }
   function gasPost(body){
     return fetch(APP_CONFIG.API_URL, {
       method: "POST",
       headers: { "Content-Type": "text/plain;charset=utf-8" }, // avoids CORS preflight on Apps Script
       body: JSON.stringify({ ...body, token: authToken() }),
-    }).then(r=>r.json());
+    })
+      .then(r => r.json())
+      .catch(err => { throw new Error("Gagal menghubungi backend Google Apps Script: " + err.message); });
   }
 
-  function gasList(sheet, params={}){ return gasGet({ action:"list", sheet, filter: JSON.stringify(params.filter||{}) }).then(r=>r.data); }
-  function gasGetOne(sheet, id){ return gasGet({ action:"get", sheet, id }).then(r=>r.data); }
-  function gasCreate(sheet, data){ return gasPost({ action:"create", sheet, data }).then(r=>r.data); }
-  function gasUpdate(sheet, id, data){ return gasPost({ action:"update", sheet, id, data }).then(r=>r.data); }
+  function unwrap(promise){
+    return promise.then(r => {
+      if(!r || r.ok === false) throw new Error(r?.message || "Backend mengembalikan respons tidak valid");
+      return r.data;
+    });
+  }
+
+  function gasList(sheet, params={}){ return unwrap(gasGet({ action:"list", sheet, filter: JSON.stringify(params.filter||{}) })); }
+  function gasGetOne(sheet, id){ return unwrap(gasGet({ action:"get", sheet, id })); }
+  function gasCreate(sheet, data){ return unwrap(gasPost({ action:"create", sheet, data })); }
+  function gasUpdate(sheet, id, data){ return unwrap(gasPost({ action:"update", sheet, id, data })); }
   function gasRemove(sheet, id){ return gasPost({ action:"delete", sheet, id }); }
 
   // ---- Public unified API -------------------------------------------------

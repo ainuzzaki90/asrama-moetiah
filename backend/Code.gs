@@ -32,7 +32,7 @@
 
 const SHEET_NAMES = [
   "users","siswa","kamar","presensi","perizinan","pelanggaran","prestasi",
-  "kesehatan","inventaris","laundry","keuangan","jadwal_piket","kebersihan",
+  "kesehatan","tumbuh_kembang","inventaris","tabungan","jadwal_piket","kebersihan",
   "audit_log","notifications",
 ];
 
@@ -195,9 +195,9 @@ function setupDatabase(){
     pelanggaran:  ["id","siswaId","tanggal","kategori","jenis","poin","tindakan","pembina","status"],
     prestasi:     ["id","siswaId","tanggal","kategori","nama","tingkat","penghargaan"],
     kesehatan:    ["id","siswaId","tanggal","keluhan","tindakan","petugas","statusRujuk"],
+    tumbuh_kembang: ["id","siswaId","tanggal","tinggiBadan","beratBadan","bmi","catatan","petugas"],
     inventaris:   ["id","siswaId","nama","jumlah","kondisi","tglMasuk"],
-    laundry:      ["id","siswaId","tglMasuk","jumlahKg","status","tglAmbil","biaya"],
-    keuangan:     ["id","tanggal","jenis","kategori","jumlah","keterangan","siswaId"],
+    tabungan:     ["id","siswaId","tanggal","jenis","jumlah","keterangan","petugas","saldoSetelah"],
     jadwal_piket: ["id","tanggal","area","siswaId","shift","status"],
     kebersihan:   ["id","tanggal","kamarId","petugas","skor","fotoSebelum","fotoSesudah","catatan"],
     audit_log:    ["id","waktu","user","aksi","detail","ip"],
@@ -237,6 +237,15 @@ function seedDemoData(ss){
     ["S-0001","24001","Ahmad Fauzan Ramadhan","VII A","L","K-01","2012-04-11","Cepu, Blora","Slamet Riyadi","081234567801","","Aktif"],
     ["S-0002","24002","Muhammad Zidan Al Ghifari","VII A","L","K-01","2012-06-02","Blora","Ahmad Zaenuri","081234567802","","Aktif"],
     ["S-0004","24004","Nur Aisyah Putri","VII A","P","K-05","2012-09-15","Cepu","Hadi Sutrisno","081234567804","","Aktif"],
+  ]);
+  appendRows(ss, "tabungan", [
+    ["TB-0001","S-0001","2026-07-01","Setoran",100000,"Setoran awal dari orang tua","Abdal Ainuz Zaki, B.A.",100000],
+    ["TB-0002","S-0001","2026-07-10","Penarikan",25000,"Beli alat mandi","Abdal Ainuz Zaki, B.A.",75000],
+    ["TB-0003","S-0002","2026-07-02","Setoran",150000,"Setoran bulanan","Abdal Ainuz Zaki, B.A.",150000],
+  ]);
+  appendRows(ss, "tumbuh_kembang", [
+    ["TK-0001","S-0001","2026-01-15",150,42,18.7,"Pengukuran awal semester","Abdal Ainuz Zaki, B.A."],
+    ["TK-0002","S-0001","2026-07-15",154,45,19.0,"Pengukuran semester genap","Abdal Ainuz Zaki, B.A."],
   ]);
   SpreadsheetApp.flush();
 }

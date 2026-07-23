@@ -32,7 +32,7 @@
         <div class="ai-chat-body" id="aiChatBody"></div>
         <div class="px-3 pb-2 d-flex flex-wrap" id="aiSuggestions"></div>
         <div class="ai-chat-foot">
-          <input type="text" id="aiInput" placeholder="Tanyakan sesuatu tentang santri...">
+          <input type="text" id="aiInput" placeholder="Tanyakan sesuatu tentang siswa...">
           <button class="btn btn-navy" id="aiSend"><i class="fa-solid fa-paper-plane"></i></button>
         </div>
       </div>`);
@@ -49,10 +49,10 @@
   function greet(){
     const body = document.getElementById("aiChatBody");
     body.dataset.greeted = "1";
-    addMsg("bot", `Assalamu'alaikum, ${Session.get().nama.split(" ")[0]}! Saya asisten AI MBMS. Saya bisa membantu meringkas perkembangan santri, mendeteksi santri bermasalah, memberi rekomendasi pembinaan, atau membuatkan draft laporan. Ada yang bisa saya bantu?`);
+    addMsg("bot", `Assalamu'alaikum, ${Session.get().nama.split(" ")[0]}! Saya asisten AI MBMS. Saya bisa membantu meringkas perkembangan siswa, mendeteksi siswa bermasalah, memberi rekomendasi pembinaan, atau membuatkan draft laporan. Ada yang bisa saya bantu?`);
     renderSuggestions([
-      "Deteksi santri bermasalah",
-      "Ringkasan perkembangan santri",
+      "Deteksi siswa bermasalah",
+      "Ringkasan perkembangan siswa",
       "Rekomendasi pembinaan",
       "Buatkan laporan bulanan",
     ]);
@@ -111,7 +111,7 @@
 
     return {
       html: `Saya belum sepenuhnya memahami pertanyaan itu. Coba salah satu topik berikut:`,
-      suggestions: ["Deteksi santri bermasalah","Ringkasan perkembangan santri","Rekomendasi pembinaan","Buatkan laporan bulanan"],
+      suggestions: ["Deteksi siswa bermasalah","Ringkasan perkembangan siswa","Rekomendasi pembinaan","Buatkan laporan bulanan"],
     };
   }
 
@@ -122,11 +122,11 @@
       return { s, risk: poin + alpa*10 };
     }).filter(r=>r.risk>0).sort((a,b)=>b.risk-a.risk);
 
-    if(!scores.length) return { html:"Kabar baik — tidak ada indikasi santri bermasalah signifikan berdasarkan data pelanggaran & presensi saat ini." };
+    if(!scores.length) return { html:"Kabar baik — tidak ada indikasi siswa bermasalah signifikan berdasarkan data pelanggaran & presensi saat ini." };
 
-    const html = `Berdasarkan akumulasi poin pelanggaran &amp; ketidakhadiran, berikut santri yang perlu perhatian ekstra:<br><br>` +
+    const html = `Berdasarkan akumulasi poin pelanggaran &amp; ketidakhadiran, berikut siswa yang perlu perhatian ekstra:<br><br>` +
       scores.slice(0,5).map((r,i)=>`<b>${i+1}. ${r.s.nama}</b> — skor risiko ${r.risk} <span style="color:var(--muted)">(${r.s.kelas})</span>`).join("<br>") +
-      `<br><br>Disarankan untuk menjadwalkan sesi pembinaan personal dengan santri berskor tertinggi.`;
+      `<br><br>Disarankan untuk menjadwalkan sesi pembinaan personal dengan siswa berskor tertinggi.`;
     return { html, suggestions:["Rekomendasi pembinaan", `Ringkasan ${scores[0].s.nama.split(" ")[0]}`] };
   }
 
@@ -141,7 +141,7 @@
   }
 
   function summarizeStudent(found, siswa, pelanggaran, presensi, kesehatan, prestasi){
-    if(!found) return { html:"Sebutkan nama santri yang ingin diringkas, misalnya: \"ringkasan Ahmad\"." };
+    if(!found) return { html:"Sebutkan nama siswa yang ingin diringkas, misalnya: \"ringkasan Ahmad\"." };
     const pl = pelanggaran.filter(p=>p.siswaId===found.id);
     const pr = prestasi.filter(p=>p.siswaId===found.id);
     const ks = kesehatan.filter(p=>p.siswaId===found.id);
@@ -149,14 +149,14 @@
       `• Pelanggaran: ${pl.length} catatan, total poin ${pl.reduce((a,p)=>a+Number(p.poin||0),0)}<br>` +
       `• Prestasi: ${pr.length} pencapaian${pr[0]?` — terbaru: ${pr[pr.length-1].nama}`:""}<br>` +
       `• Kesehatan: ${ks.length} kunjungan UKS tercatat<br><br>` +
-      (pl.length===0 ? "Santri menunjukkan perilaku yang baik secara umum." : "Perlu pemantauan berkelanjutan terkait catatan pelanggaran.");
+      (pl.length===0 ? "Siswa menunjukkan perilaku yang baik secara umum." : "Perlu pemantauan berkelanjutan terkait catatan pelanggaran.");
     return { html };
   }
 
   function draftReport(siswa, pelanggaran, presensi, kesehatan, prestasi){
     const bulan = luxon.DateTime.now().setLocale("id").toFormat("LLLL yyyy");
     const html = `<b>Draft Laporan Bulanan — ${bulan}</b><br><br>` +
-      `• Total santri aktif: ${siswa.filter(s=>s.status==="Aktif").length}<br>` +
+      `• Total siswa aktif: ${siswa.filter(s=>s.status==="Aktif").length}<br>` +
       `• Pelanggaran tercatat: ${pelanggaran.length}<br>` +
       `• Prestasi diraih: ${prestasi.length}<br>` +
       `• Kunjungan kesehatan: ${kesehatan.length}<br><br>` +

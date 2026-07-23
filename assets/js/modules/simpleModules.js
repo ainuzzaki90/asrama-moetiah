@@ -6,7 +6,7 @@
 (function(){
 
   const siswaOptions = () => Cache.allSiswa().map(s=>({ value:s.id, label: `${s.nama} (${s.kelas})` }));
-  const siswaCol = { data:"siswaId", title:"Santri", render: r => Cache.siswaName(r.siswaId) };
+  const siswaCol = { data:"siswaId", title:"Siswa", render: r => Cache.siswaName(r.siswaId) };
 
   /* ---------------- Presensi Harian --------------------------------- */
   Router.register("presensi", async (container) => {
@@ -24,7 +24,7 @@
       ],
       formFields:[
         { name:"tanggal", label:"Tanggal", type:"date", col:6, required:true },
-        { name:"siswaId", label:"Santri", type:"select", col:6, required:true, options: siswaOptions },
+        { name:"siswaId", label:"Siswa", type:"select", col:6, required:true, options: siswaOptions },
         { name:"bangun", label:"Bangun Pagi", type:"select", col:4, required:true, options: statusOpts() },
         { name:"sholat", label:"Sholat Berjamaah", type:"select", col:4, required:true, options: statusOpts() },
         { name:"mengaji", label:"Mengaji", type:"select", col:4, required:true, options: statusOpts() },
@@ -53,7 +53,7 @@
         { data:"status", title:"Status", render:r=>`<span class="badge-mbms ${r.status==='Kembali'?'badge-success':'badge-warning'}">${r.status}</span>` },
       ],
       formFields:[
-        { name:"siswaId", label:"Santri", type:"select", col:12, required:true, options: siswaOptions },
+        { name:"siswaId", label:"Siswa", type:"select", col:12, required:true, options: siswaOptions },
         { name:"jenis", label:"Jenis Izin", type:"select", col:6, required:true, options:[
           {value:"Pulang Akhir Pekan",label:"Pulang Akhir Pekan"},{value:"Sakit",label:"Sakit"},
           {value:"Acara Keluarga",label:"Acara Keluarga"},{value:"Lainnya",label:"Lainnya"} ] },
@@ -71,7 +71,7 @@
   Router.register("pelanggaran", async (container) => {
     await Cache.refresh();
     CrudModule.mount(container, {
-      title:"Pelanggaran & Pembinaan", subtitle:"Pencatatan pelanggaran dan tindak lanjut pembinaan santri",
+      title:"Pelanggaran & Pembinaan", subtitle:"Pencatatan pelanggaran dan tindak lanjut pembinaan siswa",
       icon:"fa-solid fa-triangle-exclamation", sheet:"pelanggaran",
       columns:[
         siswaCol, { data:"tanggal", title:"Tanggal", render:r=>Utils.fmtDate(r.tanggal) },
@@ -80,7 +80,7 @@
         { data:"status", title:"Status", render:r=>`<span class="badge-mbms ${r.status==='Selesai'?'badge-success':'badge-warning'}">${r.status}</span>` },
       ],
       formFields:[
-        { name:"siswaId", label:"Santri", type:"select", col:12, required:true, options: siswaOptions },
+        { name:"siswaId", label:"Siswa", type:"select", col:12, required:true, options: siswaOptions },
         { name:"tanggal", label:"Tanggal", type:"date", col:6, required:true },
         { name:"kategori", label:"Kategori", type:"select", col:6, required:true, options:[{value:"Ringan",label:"Ringan"},{value:"Sedang",label:"Sedang"},{value:"Berat",label:"Berat"}] },
         { name:"jenis", label:"Jenis Pelanggaran", col:8, required:true },
@@ -106,7 +106,7 @@
       columns:[ siswaCol, { data:"tanggal", title:"Tanggal", render:r=>Utils.fmtDate(r.tanggal) },
         { data:"kategori", title:"Kategori" }, { data:"nama", title:"Prestasi" }, { data:"tingkat", title:"Tingkat" } ],
       formFields:[
-        { name:"siswaId", label:"Santri", type:"select", col:12, required:true, options: siswaOptions },
+        { name:"siswaId", label:"Siswa", type:"select", col:12, required:true, options: siswaOptions },
         { name:"tanggal", label:"Tanggal", type:"date", col:6, required:true },
         { name:"kategori", label:"Kategori", type:"select", col:6, required:true, options:[{value:"Akademik",label:"Akademik"},{value:"Tahfidz",label:"Tahfidz"},{value:"Non-Akademik",label:"Non-Akademik"}] },
         { name:"nama", label:"Nama Prestasi", col:8, required:true },
@@ -120,12 +120,12 @@
   Router.register("kesehatan", async (container) => {
     await Cache.refresh();
     CrudModule.mount(container, {
-      title:"Kesehatan Siswa", subtitle:"Catatan kunjungan UKS dan penanganan kesehatan santri",
+      title:"Kesehatan Siswa", subtitle:"Catatan kunjungan UKS dan penanganan kesehatan siswa",
       icon:"fa-solid fa-kit-medical", sheet:"kesehatan",
       columns:[ siswaCol, { data:"tanggal", title:"Tanggal", render:r=>Utils.fmtDate(r.tanggal) },
         { data:"keluhan", title:"Keluhan" }, { data:"statusRujuk", title:"Dirujuk?", render:r=>`<span class="badge-mbms ${r.statusRujuk==='Ya'?'badge-danger':'badge-success'}">${r.statusRujuk}</span>` } ],
       formFields:[
-        { name:"siswaId", label:"Santri", type:"select", col:12, required:true, options: siswaOptions },
+        { name:"siswaId", label:"Siswa", type:"select", col:12, required:true, options: siswaOptions },
         { name:"tanggal", label:"Tanggal", type:"date", col:6, required:true },
         { name:"statusRujuk", label:"Dirujuk ke RS/Puskesmas?", type:"select", col:6, required:true, options:[{value:"Tidak",label:"Tidak"},{value:"Ya",label:"Ya"}] },
         { name:"keluhan", label:"Keluhan", type:"textarea", col:12, required:true },
@@ -144,38 +144,17 @@
   Router.register("inventaris", async (container) => {
     await Cache.refresh();
     CrudModule.mount(container, {
-      title:"Inventaris Siswa", subtitle:"Barang milik santri yang disimpan/digunakan di asrama",
+      title:"Inventaris Siswa", subtitle:"Barang milik siswa yang disimpan/digunakan di asrama",
       icon:"fa-solid fa-box-archive", sheet:"inventaris",
       columns:[ siswaCol, { data:"nama", title:"Nama Barang" }, { data:"jumlah", title:"Jumlah" },
         { data:"kondisi", title:"Kondisi", render:r=>`<span class="badge-mbms ${r.kondisi==='Baik'?'badge-success':r.kondisi==='Rusak Ringan'?'badge-warning':'badge-danger'}">${r.kondisi}</span>` },
         { data:"tglMasuk", title:"Tgl Masuk", render:r=>Utils.fmtDate(r.tglMasuk) } ],
       formFields:[
-        { name:"siswaId", label:"Santri", type:"select", col:12, required:true, options: siswaOptions },
+        { name:"siswaId", label:"Siswa", type:"select", col:12, required:true, options: siswaOptions },
         { name:"nama", label:"Nama Barang", col:8, required:true },
         { name:"jumlah", label:"Jumlah", type:"number", col:4, required:true },
         { name:"kondisi", label:"Kondisi", type:"select", col:6, required:true, options:[{value:"Baik",label:"Baik"},{value:"Rusak Ringan",label:"Rusak Ringan"},{value:"Rusak Berat",label:"Rusak Berat"}] },
         { name:"tglMasuk", label:"Tanggal Masuk", type:"date", col:6, required:true },
-      ],
-    });
-  });
-
-  /* ---------------- Laundry --------------------------------------------- */
-  Router.register("laundry", async (container) => {
-    await Cache.refresh();
-    CrudModule.mount(container, {
-      title:"Laundry", subtitle:"Pencatatan pencucian pakaian santri",
-      icon:"fa-solid fa-shirt", sheet:"laundry",
-      columns:[ siswaCol, { data:"tglMasuk", title:"Tgl Masuk", render:r=>Utils.fmtDate(r.tglMasuk) },
-        { data:"jumlahKg", title:"Berat (Kg)" },
-        { data:"biaya", title:"Biaya", render:r=>Utils.fmtCurrency(r.biaya) },
-        { data:"status", title:"Status", render:r=>`<span class="badge-mbms ${r.status==='Selesai'?'badge-success':'badge-warning'}">${r.status}</span>` } ],
-      formFields:[
-        { name:"siswaId", label:"Santri", type:"select", col:12, required:true, options: siswaOptions },
-        { name:"tglMasuk", label:"Tanggal Masuk", type:"date", col:6, required:true },
-        { name:"jumlahKg", label:"Berat (Kg)", type:"number", col:6, required:true, step:"0.1" },
-        { name:"biaya", label:"Biaya (Rp)", type:"number", col:6, required:true },
-        { name:"status", label:"Status", type:"select", col:6, required:true, options:[{value:"Proses",label:"Proses"},{value:"Selesai",label:"Selesai"}] },
-        { name:"tglAmbil", label:"Tanggal Diambil", type:"date", col:12 },
       ],
     });
   });

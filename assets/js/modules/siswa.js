@@ -28,7 +28,7 @@
       <div class="page-content">
         <div class="page-header">
           <div><h3><i class="fa-solid fa-user-graduate" style="color:var(--gold);margin-right:8px"></i>Data Siswa</h3>
-          <p>Kelola profil, kamar, dan riwayat santri asrama</p></div>
+          <p>Kelola profil, kamar, dan riwayat siswa asrama</p></div>
           <div class="d-flex gap-2 flex-wrap">
             <button class="btn btn-outline-navy" id="btnImportExcel"><i class="fa-solid fa-file-import me-1"></i>Import Excel</button>
             <button class="btn btn-outline-navy" id="btnExportExcel"><i class="fa-solid fa-file-export me-1"></i>Export Excel</button>

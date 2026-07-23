@@ -53,11 +53,11 @@ const MENU = [
     { id: "pelanggaran", label: "Pelanggaran & Pembinaan", icon: "fa-solid fa-triangle-exclamation", roles: null },
     { id: "prestasi", label: "Prestasi Siswa", icon: "fa-solid fa-medal", roles: null },
     { id: "kesehatan", label: "Kesehatan Siswa", icon: "fa-solid fa-kit-medical", roles: null },
+    { id: "tumbuhkembang", label: "Tumbuh Kembang", icon: "fa-solid fa-ruler-vertical", roles: null },
   ]},
   { section: "Operasional", items: [
     { id: "inventaris", label: "Inventaris Siswa", icon: "fa-solid fa-box-archive", roles: null },
-    { id: "laundry", label: "Laundry", icon: "fa-solid fa-shirt", roles: null },
-    { id: "keuangan", label: "Keuangan Asrama", icon: "fa-solid fa-sack-dollar", roles: null },
+    { id: "tabungan", label: "Tabungan Siswa", icon: "fa-solid fa-piggy-bank", roles: null },
   ]},
   { section: "Laporan", items: [
     { id: "reports", label: "Laporan & Export", icon: "fa-solid fa-file-export", roles: null },

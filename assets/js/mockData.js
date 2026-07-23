@@ -69,22 +69,26 @@ const MOCK_SEED = {
     { id: "KS-0001", siswaId: "S-0004", tanggal: "2026-07-21", keluhan: "Demam 38.2°C", tindakan: "Diberi obat penurun panas, istirahat di UKS", petugas: "Abdal Ainuz Zaki, B.A.", statusRujuk: "Tidak" },
   ],
 
+  tumbuh_kembang: [
+    { id: "TK-0001", siswaId: "S-0001", tanggal: "2026-01-15", tinggiBadan: 150, beratBadan: 42, bmi: 18.7, catatan: "Pengukuran awal semester", petugas: "Abdal Ainuz Zaki, B.A." },
+    { id: "TK-0002", siswaId: "S-0001", tanggal: "2026-07-15", tinggiBadan: 154, beratBadan: 45, bmi: 19.0, catatan: "Pengukuran semester genap", petugas: "Abdal Ainuz Zaki, B.A." },
+    { id: "TK-0003", siswaId: "S-0004", tanggal: "2026-01-15", tinggiBadan: 145, beratBadan: 33, bmi: 15.7, catatan: "Pengukuran awal semester", petugas: "Abdal Ainuz Zaki, B.A." },
+    { id: "TK-0004", siswaId: "S-0004", tanggal: "2026-07-15", tinggiBadan: 148, beratBadan: 35, bmi: 16.0, catatan: "Pengukuran semester genap", petugas: "Abdal Ainuz Zaki, B.A." },
+  ],
+
   inventaris: [
     { id: "INV-0001", siswaId: "S-0001", nama: "Kasur & Bantal", jumlah: 1, kondisi: "Baik", tglMasuk: "2025-07-10" },
     { id: "INV-0002", siswaId: "S-0001", nama: "Lemari Pakaian", jumlah: 1, kondisi: "Baik", tglMasuk: "2025-07-10" },
     { id: "INV-0003", siswaId: "S-0004", nama: "Kipas Angin", jumlah: 1, kondisi: "Rusak Ringan", tglMasuk: "2025-07-10" },
   ],
 
-  laundry: [
-    { id: "LD-0001", siswaId: "S-0002", tglMasuk: "2026-07-20", jumlahKg: 2.5, status: "Selesai", tglAmbil: "2026-07-21", biaya: 12500 },
-    { id: "LD-0002", siswaId: "S-0005", tglMasuk: "2026-07-21", jumlahKg: 1.8, status: "Proses", tglAmbil: "", biaya: 9000 },
-  ],
-
-  keuangan: [
-    { id: "KU-0001", tanggal: "2026-07-01", jenis: "Pemasukan", kategori: "Kas Bulanan", jumlah: 5000000, keterangan: "Kas asrama bulan Juli", siswaId: "" },
-    { id: "KU-0002", tanggal: "2026-07-10", jenis: "Pengeluaran", kategori: "Konsumsi", jumlah: 1200000, keterangan: "Belanja dapur mingguan", siswaId: "" },
-    { id: "KU-0003", tanggal: "2026-07-15", jenis: "Pemasukan", kategori: "Denda", jumlah: 25000, keterangan: "Denda pelanggaran HP", siswaId: "S-0006" },
-    { id: "KU-0004", tanggal: "2026-07-18", jenis: "Pengeluaran", kategori: "Perawatan Kamar", jumlah: 350000, keterangan: "Servis kipas angin", siswaId: "" },
+  tabungan: [
+    { id: "TB-0001", siswaId: "S-0001", tanggal: "2026-07-01", jenis: "Setoran", jumlah: 100000, keterangan: "Setoran awal dari orang tua", petugas: "Abdal Ainuz Zaki, B.A.", saldoSetelah: 100000 },
+    { id: "TB-0002", siswaId: "S-0001", tanggal: "2026-07-10", jenis: "Penarikan", jumlah: 25000, keterangan: "Beli alat mandi", petugas: "Abdal Ainuz Zaki, B.A.", saldoSetelah: 75000 },
+    { id: "TB-0003", siswaId: "S-0002", tanggal: "2026-07-02", jenis: "Setoran", jumlah: 150000, keterangan: "Setoran bulanan", petugas: "Abdal Ainuz Zaki, B.A.", saldoSetelah: 150000 },
+    { id: "TB-0004", siswaId: "S-0004", tanggal: "2026-07-03", jenis: "Setoran", jumlah: 80000, keterangan: "Setoran awal dari orang tua", petugas: "Abdal Ainuz Zaki, B.A.", saldoSetelah: 80000 },
+    { id: "TB-0005", siswaId: "S-0004", tanggal: "2026-07-18", jenis: "Penarikan", jumlah: 15000, keterangan: "Beli jajan koperasi", petugas: "Abdal Ainuz Zaki, B.A.", saldoSetelah: 65000 },
+    { id: "TB-0006", siswaId: "S-0006", tanggal: "2026-07-05", jenis: "Setoran", jumlah: 120000, keterangan: "Setoran bulanan", petugas: "Abdal Ainuz Zaki, B.A.", saldoSetelah: 120000 },
   ],
 
   notifications: [

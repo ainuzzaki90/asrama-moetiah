@@ -167,7 +167,8 @@ const Router = (() => {
       console.error(err);
       container.innerHTML = `<div class="page-content"><div class="card-mbms card-body-mbms text-center py-5">
         <i class="fa-solid fa-triangle-exclamation" style="font-size:32px;color:var(--danger)"></i>
-        <p class="mt-3 mb-0">Terjadi kesalahan saat memuat modul ini.</p></div></div>`;
+        <p class="mt-3 mb-1">Terjadi kesalahan saat memuat modul ini.</p>
+        <p style="font-size:12px;color:var(--muted);font-family:monospace">${Utils.escapeHtml(err.message || String(err))}</p></div></div>`;
     }
   }
 

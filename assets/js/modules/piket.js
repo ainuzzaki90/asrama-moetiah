@@ -13,7 +13,7 @@
       <div class="page-content">
         <div class="page-header">
           <div><h3><i class="fa-solid fa-rotate" style="color:var(--gold);margin-right:8px"></i>Jadwal Piket</h3>
-          <p>Generator otomatis dengan rotasi adil antar-santri</p></div>
+          <p>Generator otomatis dengan rotasi adil antar-siswa</p></div>
           <div class="d-flex gap-2 flex-wrap">
             <button class="btn btn-outline-navy" id="btnGenerate"><i class="fa-solid fa-wand-magic-sparkles me-1"></i>Generate Jadwal Minggu Ini</button>
             <button class="btn btn-navy" id="btnAddPiket"><i class="fa-solid fa-plus me-1"></i>Tambah Manual</button>
@@ -77,7 +77,7 @@
   async function generateSchedule(onDone){
     const confirm = await Swal.fire({
       icon:"question", title:"Generate Jadwal Minggu Ini?",
-      html:"Sistem akan membuat jadwal piket 7 hari ke depan untuk semua area, dengan rotasi merata berdasarkan riwayat piket santri.",
+      html:"Sistem akan membuat jadwal piket 7 hari ke depan untuk semua area, dengan rotasi merata berdasarkan riwayat piket siswa.",
       showCancelButton:true, confirmButtonText:"Generate", cancelButtonText:"Batal", confirmButtonColor:"#0a2540",
     });
     if(!confirm.isConfirmed) return;
